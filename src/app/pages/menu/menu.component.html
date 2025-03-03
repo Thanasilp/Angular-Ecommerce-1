@@ -1,0 +1,22 @@
+<div class="flex">
+  <app-sidebar
+    (filterChange)="
+      filterMenu(
+        $event.searchTerm,
+        $event.selectedPrice,
+        $event.selectedCoffeeType
+      )
+    "
+    class="h-screen"
+  ></app-sidebar>
+  <app-menu-list
+    [menuItems]="filteredMenuItems"
+    class="min-h-screen"
+  ></app-menu-list>
+</div>
+
+<!--
+ถ้าต้องการให้ element สูงเท่ากับหน้าจอ → h-screen
+ถ้าต้องการให้ element เติบโตตามเนื้อหา → min-h-screen
+ถ้าต้องการให้มีการเลื่อน (scroll) → overflow-auto
+-->

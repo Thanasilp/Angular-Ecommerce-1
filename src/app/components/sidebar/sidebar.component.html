@@ -1,0 +1,56 @@
+<div class="flex min-h-screen">
+  <!-- Sidebar Section -->
+  <aside class="bg-black text-white w-64 lg:w-72 xl:w-80 p-6 shrink-0">
+    <h2 class="text-2xl font-extrabold mb-4">Coffee Filter</h2>
+
+    <!-- Search Coffee Name -->
+    <div class="mb-6">
+      <label for="search" class="block text-sm font-semibold mb-2"
+        >Search Coffee Name</label
+      >
+      <input
+        type="text"
+        id="search"
+        class="w-full p-2 rounded-md bg-gray-800 text-white placeholder-gray-500"
+        placeholder="Search for coffee..."
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onFilterChange()"
+      />
+    </div>
+
+    <!-- Price Filter -->
+    <div class="mb-6">
+      <label for="price" class="block text-sm font-semibold mb-2"
+        >Filter by Price</label
+      >
+      <select
+        id="price"
+        class="w-full p-2 rounded-md bg-gray-800 text-white"
+        [(ngModel)]="selectedPrice"
+        (ngModelChange)="onFilterChange()"
+      >
+        <option value="low-to-high">Price: Low to High</option>
+        <option value="high-to-low">Price: High to Low</option>
+      </select>
+    </div>
+
+    <!-- Coffee Type Filter -->
+    <div class="mb-6">
+      <label for="coffee-type" class="block text-sm font-semibold mb-2"
+        >Filter by Coffee Type</label
+      >
+      <select
+        id="coffee-type"
+        class="w-full p-2 rounded-md bg-gray-800 text-white"
+        [(ngModel)]="selectedCoffeeType"
+        (ngModelChange)="onFilterChange()"
+      >
+        <option value="">All Coffee Types</option>
+        <option value="espresso-based">Espresso-based</option>
+        <option value="Cold Coffee">Cold Coffee</option>
+        <option value="Dessert">Dessert</option>
+        <option value="Specialty">Specialty</option>
+      </select>
+    </div>
+  </aside>
+</div>
