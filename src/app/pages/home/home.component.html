@@ -2,14 +2,15 @@
 <section
   class="bg-cover bg-center h-96"
   [ngClass]="selectedBannerStyle.backgroundColor"
+  @fadeIn
 >
   <div
-    class="h-full flex justify-center items-center bg-opacity-50 text-white text-center"
+    class="h-full flex justify-center items-center bg-opacity-50 text-white text-center gap-2"
   >
-    <h1 class="text-4xl font-extrabold">
-      {{ selectedBannerStyle.title }} &nbsp;
+    <h1 class="text-4xl font-extrabold text-right">
+      {{ selectedBannerStyle.title }}
     </h1>
-    <p class="mt-4 text-lg">{{ selectedBannerStyle.description }}</p>
+    <p class="mt-4 text-lg text-left">{{ selectedBannerStyle.description }}</p>
   </div>
 </section>
 
@@ -48,7 +49,7 @@
 </section> -->
 
 <!-- Products Section -->
-<section id="products" class="py-16 px-4 sm:px-6 lg:px-8">
+<section id="products" class="pt-16 pb-8 px-4 sm:px-6 lg:px-8" @fadeIn>
   <div class="max-w-7xl mx-auto text-center">
     <h2 class="text-3xl font-extrabold text-gray-900">
       Our Recommendation taste!
@@ -76,11 +77,6 @@
         <div class="mt-4">
           <span class="text-lg font-bold text-gray-900">฿{{ item.price }}</span>
         </div>
-        <button
-          class="mt-6 w-full py-2 bg-brown-600 text-white rounded-lg hover:bg-brown-500"
-        >
-          Add to Cart
-        </button>
       </div>
     </div>
   </div>
@@ -104,5 +100,91 @@
       (click)="changePage(currentPage + 1)"
       class="mt-1 fas fa-chevron-right text-xl cursor-pointer text-gray-600 hover:text-gray-900 transition duration-300"
     ></i>
+  </div>
+</section>
+
+<!-- About Coffee Section -->
+<section
+  id="about-coffee"
+  class="py-16 px-6 bg-gradient-to-b from-gray-100 to-gray-200"
+>
+  <div class="max-w-7xl mx-auto text-center">
+    <h2 class="text-4xl font-extrabold text-gray-900">
+      ☕ Discover the World of Coffee
+    </h2>
+    <p class="mt-4 text-lg text-gray-700 max-w-2xl mx-auto">
+      Explore the rich history, unique varieties, and incredible benefits of
+      coffee. A perfect cup is more than just a drink—it's an experience!
+    </p>
+  </div>
+
+  <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <!-- Card 1: History of Coffee -->
+    <div
+      class="relative group bg-white border border-gray-200 rounded-lg shadow-md p-6 transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl"
+    >
+      <div
+        class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-yellow-400 text-white p-3 rounded-full text-3xl"
+      >
+        📜
+      </div>
+      <h3 class="text-xl font-semibold text-gray-900 mt-8">
+        The History of Coffee
+      </h3>
+      <p class="mt-2 text-gray-600">
+        Legend says coffee was discovered by an Ethiopian goat herder. It later
+        spread across the world, creating a culture of coffee lovers.
+      </p>
+      <div class="mt-4">
+        <a href="#" class="text-yellow-500 font-bold hover:underline"
+          >Learn More →</a
+        >
+      </div>
+    </div>
+
+    <!-- Card 2: Types of Coffee Beans -->
+    <div
+      class="relative group bg-white border border-gray-200 rounded-lg shadow-md p-6 transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl"
+    >
+      <div
+        class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-green-500 text-white p-3 rounded-full text-3xl"
+      >
+        🌱
+      </div>
+      <h3 class="text-xl font-semibold text-gray-900 mt-8">
+        Types of Coffee Beans
+      </h3>
+      <p class="mt-2 text-gray-600">
+        The two main coffee beans are <strong>Arabica</strong> (smooth &
+        aromatic) and <strong>Robusta</strong> (strong & bold). Which one do you
+        prefer?
+      </p>
+      <div class="mt-4">
+        <a href="#" class="text-green-500 font-bold hover:underline"
+          >Discover More →</a
+        >
+      </div>
+    </div>
+
+    <!-- Card 3: Health Benefits of Coffee -->
+    <div
+      class="relative group bg-white border border-gray-200 rounded-lg shadow-md p-6 transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl"
+    >
+      <div
+        class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-red-500 text-white p-3 rounded-full text-3xl"
+      >
+        ❤️
+      </div>
+      <h3 class="text-xl font-semibold text-gray-900 mt-8">Health Benefits</h3>
+      <p class="mt-2 text-gray-600">
+        Coffee is packed with antioxidants, helps boost energy, and can even
+        enhance brain function. Enjoy it in moderation for a health boost!
+      </p>
+      <div class="mt-4">
+        <a href="#" class="text-red-500 font-bold hover:underline"
+          >Read More →</a
+        >
+      </div>
+    </div>
   </div>
 </section>

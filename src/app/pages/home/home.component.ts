@@ -2,12 +2,24 @@ import { Component, inject, OnInit } from '@angular/core';
 import { MenuService } from '../../services/menu.service';
 import { MenuItem } from '../../interfaces/Menu-items';
 import { CommonModule } from '@angular/common';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-home',
   imports: [CommonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
+  animations: [
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(10px)' }),
+        animate(
+          '400ms ease-out',
+          style({ opacity: 1, transform: 'translateY(0)' })
+        ),
+      ]),
+    ]),
+  ],
 })
 export class HomeComponent implements OnInit {
   private menuService = inject(MenuService);

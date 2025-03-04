@@ -23,12 +23,22 @@
         <p class="text-green-600 font-bold">฿{{ item.price }}</p>
       </div>
 
-      <button
-        type="button"
-        class="bg-gray-900 text-white rounded-md px-2 py-1 w-full sm:w-auto hover:bg-gray-800 transition-colors ease-in-out duration-200 shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
-      >
-        Add to Cart
-      </button>
+      <div class="flex">
+        <button
+          (click)="addToCart(item)"
+          type="button"
+          class="bg-gray-900 text-white rounded-md px-2 py-1 w-full xl:w-auto hover:bg-gray-800 transition-colors ease-in-out duration-200 shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black sm:hidden xl:block"
+        >
+          Add to Cart
+        </button>
+        <button
+          (click)="addToCart(item)"
+          type="button"
+          class="block xl:hidden flex items-center"
+        >
+          <i class="fa-solid fa-plus hover:text-gray-600"></i>
+        </button>
+      </div>
     </div>
   </div>
 </div>

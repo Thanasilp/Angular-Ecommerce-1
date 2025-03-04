@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { CartService } from './services/cart.service';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { initFlowbite } from 'flowbite';
@@ -11,9 +12,12 @@ import { FooterComponent } from './components/footer/footer.component';
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-  title = 'client';
+  title = 'Beany-Beans';
+
+  private CartService = inject(CartService);
 
   ngOnInit(): void {
     initFlowbite();
+    this.CartService.loadCartFromStorage();
   }
 }

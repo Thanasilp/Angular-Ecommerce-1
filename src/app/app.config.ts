@@ -14,8 +14,10 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideHttpClient(),
     provideToastr({
-      timeOut: 3000,
-      positionClass: 'toast-top-right',
+      positionClass: 'toast-top-right', // ตำแหน่งการแสดงผล
+      timeOut: 1500, // เวลาที่ Toast จะแสดง
+      progressBar: true, // แสดง progress bar
+      closeButton: true, // ปุ่มปิด
       preventDuplicates: true,
     }),
     providePrimeNG({
