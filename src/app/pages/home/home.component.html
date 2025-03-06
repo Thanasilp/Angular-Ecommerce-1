@@ -65,8 +65,8 @@
       class="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all"
     >
       <img
-        class="w-full h-56 object-cover"
-        [src]="item.image"
+        class="w-full h-56 object-cover scale-100 hover:scale-110 transition-transform duration-300"
+        [src]="item.imagePublicId"
         alt="{{ item.name }}"
       />
       <div class="p-4">

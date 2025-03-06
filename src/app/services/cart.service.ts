@@ -36,7 +36,7 @@ export class CartService {
     localStorage.setItem('cart', JSON.stringify(this.cartItems()));
   }
 
-  removeFromCart(id: number): string | null {
+  removeFromCart(id: string): string | null {
     const updatedCart = this.cartItems().filter((item) => item.id !== id); // ลบสินค้าออกจาก cartItems
     const removedItem = this.cartItems().find((item) => item.id === id); // ค้นหาสินค้าที่ถูกลบ
 

@@ -40,7 +40,7 @@ export class LoginComponent {
     this.authService.loginUser(email, password).subscribe({
       next: (response) => {
         localStorage.setItem('token', response.token);
-        this.router.navigate(['homepage']);
+        this.router.navigate(['home']);
         this.toastr.success('Success', 'Login Successful');
       },
       error: (err) => {

@@ -17,7 +17,7 @@ export class CartComponent {
 
   // cartItems$ = this.cartService.getCartItems();
 
-  removeFromCart(id: number) {
+  removeFromCart(id: string) {
     const itemName = this.cartService.removeFromCart(id); // รับชื่อสินค้าที่ถูกลบ
     this.cartItems = this.cartService.getCartItems(); // อัพเดตค่าหลังการลบสินค้า
 

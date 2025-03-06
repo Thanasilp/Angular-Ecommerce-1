@@ -37,7 +37,7 @@ export class MenuListComponent {
       id: item._id, // เปลี่ยน _id จาก MenuItem เป็น id สำหรับ CartItem
       name: item.name,
       price: item.price,
-      image: item.image,
+      image: item.imagePublicId,
       quantity: 1,
     };
     this.cartService.addToCart(cartItem);

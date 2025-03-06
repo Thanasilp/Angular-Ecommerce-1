@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, OnInit } from '@angular/core';
 import { MenuService } from '../../services/menu.service';
 import { MenuItem } from '../../interfaces/Menu-items';
 import { CommonModule } from '@angular/common';
@@ -24,7 +24,9 @@ import { trigger, transition, style, animate } from '@angular/animations';
 export class HomeComponent implements OnInit {
   private menuService = inject(MenuService);
 
-  menuItems: MenuItem[] = [];
+  // 1. ดึงข้อมูลเมนูจาก Service ผ่าน Signal
+  menuItems = computed(() => this.menuService.products());
+
   displayedItems: MenuItem[] = [];
 
   //pagination
@@ -54,7 +56,7 @@ export class HomeComponent implements OnInit {
   selectedBannerStyle: any;
 
   ngOnInit(): void {
-    this.menuItems = this.menuService.getMenuItems(); //ตอนโลหดรูปครั้งแรก
+    this.menuService.fetchProducts(); // 2. ดึงข้อมูลจาก backend
     this.updateDisplayedItems(); //ตอนเปลี่ยน pagnination
 
     //เลือกรูปแบบสุ่มจาก array
@@ -66,6 +68,13 @@ export class HomeComponent implements OnInit {
     }, 3000);
   }
 
+  // ใช้ effect() แทน
+  constructor() {
+    effect(() => {
+      this.updateDisplayedItems();
+    });
+  }
+
   // ฟังก์ชันสุ่มเลือกรูปแบบ
   setRandomBannerStyle() {
     this.selectedBannerStyle =
@@ -74,9 +83,9 @@ export class HomeComponent implements OnInit {
 
   // ฟังก์ชันสำหรับแบ่งข้อมูลเมนู
   updateDisplayedItems() {
-    const starIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = starIndex + this.itemsPerPage;
-    this.displayedItems = this.menuItems.slice(starIndex, endIndex);
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.displayedItems = this.menuItems()?.slice(startIndex, endIndex) || [];
   }
 
   changePage(page: number) {
@@ -87,6 +96,6 @@ export class HomeComponent implements OnInit {
   }
 
   getTotalPages(): number {
-    return Math.ceil(this.menuItems.length / this.itemsPerPage);
+    return Math.ceil((this.menuItems()?.length || 0) / this.itemsPerPage);
   }
 }
