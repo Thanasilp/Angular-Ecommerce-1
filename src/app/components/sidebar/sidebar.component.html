@@ -1,6 +1,15 @@
 <div class="flex min-h-screen">
-  <!-- Sidebar Section -->
-  <aside class="bg-black text-white w-64 lg:w-72 xl:w-80 p-6 shrink-0">
+  <!-- Sidebar (ซ่อนเมื่อหน้าจอเล็ก) -->
+  <aside
+    class="bg-black text-white w-64 lg:w-72 xl:w-80 p-6 fixed inset-0 z-50 transform -translate-x-full transition-transform duration-300 ease-in-out md:translate-x-0 md:relative backdrop-blur-md"
+    [class.translate-x-0]="isSidebarOpen"
+  >
+    <button
+      class="absolute top-4 right-4 text-white md:hidden"
+      (click)="toggleSidebar()"
+    >
+      <i class="fa-solid fa-xmark text-2xl"></i>
+    </button>
     <h2 class="text-2xl font-extrabold mb-4">Coffee Filter</h2>
 
     <!-- Search Coffee Name -->
@@ -53,4 +62,16 @@
       </select>
     </div>
   </aside>
+
+  <!-- Main Content -->
+  <div class="flex-1 p-4">
+    <!-- Hamburger Menu Button -->
+    <button
+      class="fixed top-22 left-2 p-2 bg-gray-900 text-white rounded-md z-50 transition-opacity duration-300 lg:hidden"
+      (click)="toggleSidebar()"
+      [class.opacity-0]="isSidebarOpen"
+    >
+      <i class="fa-solid fa-bars text-xl"></i>
+    </button>
+  </div>
 </div>

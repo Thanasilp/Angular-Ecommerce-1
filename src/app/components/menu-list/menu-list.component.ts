@@ -34,50 +34,17 @@ export class MenuListComponent {
     // ปกติสามารถเขียนแบบนี้ได้เลย แต่ว่า object จริงๆมี id => _id
     // const cartItem: CartItem = { ...item, quantity: 1 };
     const cartItem: CartItem = {
-      id: item._id, // เปลี่ยน _id จาก MenuItem เป็น id สำหรับ CartItem
+      productId: item._id, // เปลี่ยน _id จาก MenuItem เป็น id สำหรับ CartItem
       name: item.name,
       price: item.price,
       image: item.imagePublicId,
       quantity: 1,
     };
     this.cartService.addToCart(cartItem);
+    console.log(cartItem);
     this.toastr.success(
       `${item.name} has been added to your cart!`,
       'Item Added'
     );
   }
-
-  // menuItems: MenuItem[] = []; //ข้อมูลเมนูทั้งหมด
-  // displayedItems: MenuItem[] = []; //ข้มูลที่แสดงในแต่ละหน้า
-
-  // //Pagination
-  // currentPage: number = 1;
-  // itemsPerPage: number = 6;
-
-  // private menuService = inject(MenuService);
-
-  // ngOnInit(): void {
-  //   this.menuItems = this.menuService.getMenuItems();
-  //   this.updateDisplayedItems(); // เริ่มต้นแสดงเมนูจากหน้าแรก
-  // }
-
-  // // ฟังก์ชันสำหรับแบ่งข้อมูลเมนู
-  // updateDisplayedItems() {
-  //   const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-  //   const endIndex = startIndex + this.itemsPerPage;
-  //   this.displayedItems = this.menuItems.slice(startIndex, endIndex);
-  // }
-
-  // // ฟังก์ชันสำหรับเปลี่ยนหน้า
-  // changePage(page: number) {
-  //   if (page > 0 && page <= this.getTotalPages()) {
-  //     this.currentPage = page;
-  //     this.updateDisplayedItems();
-  //   }
-  // }
-
-  // // ฟังก์ชันสำหรับคำนวณจำนวนหน้าทั้งหมด
-  // getTotalPages(): number {
-  //   return Math.ceil(this.menuItems.length / this.itemsPerPage);
-  // }
 }

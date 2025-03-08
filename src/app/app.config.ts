@@ -5,14 +5,15 @@ import { routes } from './app.routes';
 import { provideToastr } from 'ngx-toastr';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { authInterceptor } from './interceptor/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideAnimations(),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([authInterceptor])),
     provideToastr({
       positionClass: 'toast-top-right', // ตำแหน่งการแสดงผล
       timeOut: 1500, // เวลาที่ Toast จะแสดง

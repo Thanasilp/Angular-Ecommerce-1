@@ -38,14 +38,20 @@ export class LoginComponent {
     const { email, password } = this.login;
 
     this.authService.loginUser(email, password).subscribe({
-      next: (response) => {
-        localStorage.setItem('token', response.token);
-        this.router.navigate(['home']);
+      next: () => {
         this.toastr.success('Success', 'Login Successful');
+        setTimeout(() => {
+          this.router.navigate(['home']);
+        }, 1000);
       },
-      error: (err) => {
+      error: () => {
         this.toastr.error('Error', 'Invalid credentials');
       },
     });
+  }
+
+  onLogout() {
+    this.authService.logout();
+    this.router.navigate(['login']);
   }
 }

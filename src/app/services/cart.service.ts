@@ -1,61 +1,53 @@
-import { CartItem } from './../interfaces/Cart-items';
 import { Injectable, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { CartItem } from './../interfaces/Cart-items';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CartService {
-  // private cartItems = new BehaviorSubject<CartItem[]>([]);
-  // CartItems$ = this.cartItems.asObservable();
+  private apiUrl = 'http://localhost:4000/cart'; // URL ของ API Backend
 
-  // ใช้ signal แทน BehaviorSubject
-  private cartItems = signal<CartItem[]>(this.loadCartFromStorage());
+  // ใช้ signal แทน Observable
+  cartItems = signal<CartItem[]>([]);
 
-  // Getter สำหรับดึงข้อมูลลูกค้า
-  getCartItems() {
-    console.log(this.cartItems());
+  constructor(private http: HttpClient) {}
 
-    return this.cartItems();
+  // โหลดตะกร้าและอัปเดต signal
+  fetchCartItems() {
+    this.http
+      .get<{ success: boolean; message: string; cart: any }>(this.apiUrl)
+      .subscribe((response) => {
+        this.cartItems.set(response.cart.items); // อัปเดตค่าใน signal
+      });
   }
 
+  // เพิ่มสินค้าในตะกร้า
   addToCart(item: CartItem) {
-    let items = [...this.cartItems()];
-    const existingItem = items.find((cartItem) => cartItem.id === item.id);
-
-    if (existingItem) {
-      existingItem.quantity += 1;
-    } else {
-      items.push({ ...item, quantity: 1 });
-    }
-
-    this.cartItems.set(items);
-    this.saveCartToStorage();
+    this.http
+      .post<{ success: boolean; message: string }>(this.apiUrl, item)
+      .subscribe(() => {
+        this.cartItems.update((items) => [...items, item]); // อัปเดตรายการสินค้า
+      });
   }
 
-  saveCartToStorage() {
-    localStorage.setItem('cart', JSON.stringify(this.cartItems()));
+  // ลบสินค้าออกจากตะกร้า
+  removeFromCart(productId: string) {
+    this.http
+      .put<{ success: boolean; message: string }>(this.apiUrl, { productId })
+      .subscribe(() => {
+        this.cartItems.update((items) =>
+          items.filter((item) => item.productId !== productId)
+        );
+      });
   }
 
-  removeFromCart(id: string): string | null {
-    const updatedCart = this.cartItems().filter((item) => item.id !== id); // ลบสินค้าออกจาก cartItems
-    const removedItem = this.cartItems().find((item) => item.id === id); // ค้นหาสินค้าที่ถูกลบ
-
-    if (removedItem) {
-      this.cartItems.set(updatedCart); // อัพเดต cartItems
-      this.saveCartToStorage(); // อัพเดต localStorage ด้วยค่าที่อัพเดตแล้ว
-      return removedItem.name; // คืนค่าชื่อสินค้าที่ถูกลบ
-    }
-
-    return null;
-  }
-
+  // ล้างตะกร้าทั้งหมด
   clearCart() {
-    this.cartItems.set([]);
-    localStorage.removeItem('cart');
-  }
-
-  loadCartFromStorage(): CartItem[] {
-    const savedCart = localStorage.getItem('cart');
-    return savedCart ? JSON.parse(savedCart) : [];
+    this.http
+      .delete<{ success: boolean; message: string }>(this.apiUrl)
+      .subscribe(() => {
+        this.cartItems.set([]); // เคลียร์ตะกร้า
+      });
   }
 }

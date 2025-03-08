@@ -1,3 +1,4 @@
+import { CartItem } from './../../interfaces/Cart-items';
 import { Component, inject } from '@angular/core';
 import { CartService } from '../../services/cart.service';
 import { CommonModule } from '@angular/common';
@@ -13,16 +14,21 @@ import { ToastrService } from 'ngx-toastr';
 export class CartComponent {
   private cartService = inject(CartService);
   private toastr = inject(ToastrService);
-  cartItems = this.cartService.getCartItems(); // ✅ ไม่ต้องใช้ async pipe ใน HTML
 
-  // cartItems$ = this.cartService.getCartItems();
+  // ใช้ signal ของ service
+  cartItems = this.cartService.cartItems;
+
+  constructor() {
+    this.cartService.fetchCartItems(); // โหลดข้อมูลตะกร้าเมื่อ component ถูกสร้าง
+  }
 
   removeFromCart(id: string) {
-    const itemName = this.cartService.removeFromCart(id); // รับชื่อสินค้าที่ถูกลบ
-    this.cartItems = this.cartService.getCartItems(); // อัพเดตค่าหลังการลบสินค้า
+    this.cartService.removeFromCart(id);
+    this.toastr.warning('Item removed!', 'Removed');
+  }
 
-    if (itemName) {
-      this.toastr.warning(`${itemName} has been removed!`, 'Item removed!');
-    }
+  clearCart() {
+    this.cartService.clearCart();
+    this.toastr.info('Cart cleared!', 'Info');
   }
 }

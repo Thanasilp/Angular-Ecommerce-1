@@ -16,6 +16,12 @@ export class SidebarComponent {
     selectedCoffeeType: string;
   }>();
 
+  isSidebarOpen = false;
+
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
   searchTerm: string = '';
   selectedPrice: string = 'low-to-high';
   selectedCoffeeType: string = '';

@@ -5,12 +5,10 @@ import { MenuComponent } from './pages/menu/menu.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { CartComponent } from './pages/cart/cart.component';
+import { authGuard } from './guards/auth.guard';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 export const routes: Routes = [
-  {
-    path: 'navbar',
-    component: NavbarComponent,
-  },
   {
     path: 'home',
     component: HomeComponent,
@@ -30,6 +28,7 @@ export const routes: Routes = [
   {
     path: 'cart',
     component: CartComponent,
+    canActivate: [authGuard],
   },
   {
     path: '',
@@ -37,4 +36,5 @@ export const routes: Routes = [
     pathMatch: 'full',
     title: 'App Home Page',
   },
+  { path: '**', component: PageNotFoundComponent },
 ];
