@@ -9,6 +9,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { initFlowbite } from 'flowbite';
 
 @Component({
   selector: 'app-navbar',
@@ -19,6 +20,7 @@ import { Router, RouterLink } from '@angular/router';
 export class NavbarComponent implements OnInit {
   public authService = inject(AuthService);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   //ก่อนที่ไม่ได้ใช้ตัวนี้ ปัญหาคือ icon user กดไม่ได้
   // บางครั้ง Angular อาจไม่ detect การเปลี่ยนแปลงของ Signal ได้เร็วพอ ดังนั้นเราสามารถใช้ ChangeDetectorRef เพื่อบังคับให้ Component re-render
@@ -28,6 +30,14 @@ export class NavbarComponent implements OnInit {
   //     this.cdr.detectChanges(); // บังคับให้ Angular อัปเดต View
   //   });
   // }
+
+  constructor() {
+    effect(() => {
+      console.log('Auth changed:', this.isLoggedIn());
+      this.cdr.detectChanges(); // บังคับให้ Angular อัปเดต
+      initFlowbite(); // เรียก Flowbite ใหม่
+    });
+  }
 
   ngOnInit(): void {
     console.log('check');

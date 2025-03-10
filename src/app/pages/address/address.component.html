@@ -1,0 +1,126 @@
+<form
+  [formGroup]="deliveryForm"
+  (ngSubmit)="onSubmit()"
+  class="mx-auto my-8 px-4 min-h-screen"
+>
+  <!-- Delivery Form Section -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Address Form -->
+    <div class="bg-white p-6 rounded-lg shadow-md max-w-2xl w-full mx-auto">
+      <h2 class="text-2xl font-semibold text-gray-700 mb-4">
+        Delivery Information
+      </h2>
+      <div>
+        <div class="mb-4">
+          <label for="name" class="block text-sm font-medium text-gray-600"
+            >Full Name</label
+          >
+          <input
+            type="text"
+            id="name"
+            class="w-full p-2 border border-gray-300 rounded-md"
+            placeholder="John Doe"
+            formControlName="name"
+            required
+          />
+        </div>
+        <div class="mb-4">
+          <label for="address" class="block text-sm font-medium text-gray-600"
+            >Address</label
+          >
+          <input
+            type="text"
+            id="address"
+            class="w-full p-2 border border-gray-300 rounded-md"
+            placeholder="123 Main Street, City"
+            formControlName="address"
+            required
+          />
+        </div>
+        <div class="mb-4">
+          <label for="phone" class="block text-sm font-medium text-gray-600"
+            >Phone Number</label
+          >
+          <input
+            type="tel"
+            id="phone"
+            class="w-full p-2 border border-gray-300 rounded-md"
+            placeholder="+66 123 456 789"
+            formControlName="phone"
+            required
+          />
+        </div>
+        <div class="mb-4">
+          <label for="details" class="block text-sm font-medium text-gray-600"
+            >Delivery Details</label
+          >
+          <textarea
+            id="details"
+            class="w-full p-2 border border-gray-300 rounded-md"
+            placeholder="Additional instructions (e.g., buzz apartment door, call when arriving)"
+            formControlName="details"
+            rows="3"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment and Price Card Section -->
+    <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-md mx-auto">
+      <h2 class="text-2xl font-semibold text-gray-700 mb-4">Payment & Price</h2>
+      <div class="mb-4">
+        <p class="text-lg font-semibold text-gray-700">
+          Total Price:
+          <span id="total-price" class="text-xl font-bold text-green-600"
+            >฿{{ calculateTotal() }}</span
+          >
+        </p>
+      </div>
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-600"
+          >Payment Method</label
+        >
+        <div class="space-y-3">
+          <div class="flex items-center">
+            <input
+              type="radio"
+              id="stripe"
+              name="payment-method"
+              value="stripe"
+              class="mr-2 text-blue-900"
+            />
+            <i class="fa-brands fa-stripe text-5xl"></i>
+          </div>
+          <div class="flex items-center">
+            <input
+              type="radio"
+              id="bank"
+              name="payment-method"
+              value="bank"
+              class="mr-2"
+            />
+            <label for="bank" class="text-lg font-bold text-gray-800"
+              >Bank Transfer</label
+            >
+          </div>
+        </div>
+      </div>
+      <div>
+        <button
+          type="submit"
+          [disabled]="!deliveryForm.valid"
+          class="w-full py-3 bg-blue-900 text-white rounded-md hover:bg-blue-700"
+        >
+          Confirm Order
+        </button>
+        <button
+          (click)="back()"
+          type="submit"
+          class="w-full py-3 bg-gray-700 text-white rounded-md mt-4 hover:bg-gray-900"
+        >
+          Back
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

@@ -31,14 +31,33 @@ export class CartService {
       });
   }
 
+  // อัปเดตสถานะสินค้าในตะกร้า
+  updateQuantity(productId: string, quantity: number) {
+    this.http
+      .put<{ success: boolean; message: string }>(`${this.apiUrl}`, {
+        productId,
+        quantity,
+      })
+      .subscribe(() => {
+        this.cartItems.update((items) =>
+          items.map((item) =>
+            item.productId === productId ? { ...item, quantity } : item
+          )
+        );
+      });
+  }
+
   // ลบสินค้าออกจากตะกร้า
   removeFromCart(productId: string) {
     this.http
-      .put<{ success: boolean; message: string }>(this.apiUrl, { productId })
+      .delete<{ success: boolean; message: string }>(
+        `${this.apiUrl}/${productId}`
+      )
       .subscribe(() => {
         this.cartItems.update((items) =>
           items.filter((item) => item.productId !== productId)
         );
+        // console.log('Updated cartItems:', this.cartItems()); // 🛠 Debug ดูว่าค่าเปลี่ยนจริงไหม
       });
   }
 

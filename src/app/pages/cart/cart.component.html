@@ -1,33 +1,78 @@
-<div class="max-w-4xl mx-auto p-4">
+<div class="max-w-2xl mx-auto p-4 min-h-screen">
   <h2 class="text-2xl font-bold mb-4">Your Cart</h2>
 
-  <div *ngIf="cartItems().length === 0" class="text-center text-gray-500">
-    No items in your cart.
-  </div>
-  <div
-    *ngFor="let item of cartItems()"
-    class="border p-4 rounded-lg mb-2 flex justify-between items-center border-gray-400"
-  >
-    <div class="flex items-center">
-      <img
-        [src]="item.image"
-        alt="{{ item.name }}"
-        class="w-16 h-16 object-cover rounded-md mr-4"
-      />
-      <div>
-        <h3 class="text-lg font-semibold">{{ item.name }}</h3>
-        <p class="text-gray-600">฿{{ item.price }} x {{ item.quantity }}</p>
-      </div>
+  <!-- แสดงข้อความ "กำลังโหลด..." ถ้ากำลังโหลด -->
+  <div *ngIf="isLoading" class="text-center text-gray-500">Loading...</div>
+
+  <!-- ถ้าโหลดเสร็จแล้วค่อยแสดงตะกร้าสินค้า -->
+  <div *ngIf="!isLoading">
+    <div *ngIf="cartItems().length === 0" class="text-center text-gray-500">
+      No items in your cart.
     </div>
 
-    <button
-      (click)="removeFromCart(item.productId)"
-      class="font-bold rounded-lg p-2"
+    <div
+      *ngFor="let item of cartItems()"
+      class="border p-3 rounded-lg mb-2 flex justify-between items-center border-gray-300"
     >
-      <i class="text-black hover:text-red-600 fa-solid fa-trash"></i>
+      <div class="flex items-center pl-4">
+        <img
+          [src]="item.image"
+          alt="{{ item.name }}"
+          class="w-14 h-14 object-cover rounded-md mr-3"
+        />
+        <div>
+          <h3 class="text-base font-medium">{{ item.name }}</h3>
+          <p class="text-gray-500 text-sm">฿{{ item.price }}</p>
+
+          <!-- ปรับ UI ให้ minimal -->
+          <div class="flex items-center mt-2 space-x-2">
+            <button
+              (click)="decreaseQuantity(item)"
+              class="text-gray-600 hover:text-black"
+              [disabled]="item.quantity <= 1"
+            >
+              -
+            </button>
+
+            <input
+              type="number"
+              [(ngModel)]="item.quantity"
+              class="border border-gray-300 w-12 text-center text-sm rounded-md appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+              min="1"
+              (change)="updateQuantity(item)"
+            />
+
+            <button
+              (click)="increaseQuantity(item)"
+              class="text-gray-600 hover:text-black"
+            >
+              +
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <button
+        (click)="removeFromCart(item.productId)"
+        class="text-gray-500 hover:text-red-600 pr-4"
+      >
+        <i class="fa-solid fa-trash"></i>
+      </button>
+    </div>
+
+    <!-- Total -->
+    <div class="mt-4 flex justify-between items-center text-lg font-semibold">
+      <span>Total</span>
+      <span>฿{{ calculateTotal() }}</span>
+    </div>
+
+    <!-- Checkout button -->
+    <button
+      type="button"
+      (click)="checkout()"
+      class="bg-black hover:bg-gray-900 text-white text-sm py-2 px-4 rounded-lg mt-4 w-full"
+    >
+      Checkout
     </button>
   </div>
-
-  <h2 class="text-2xl font-bold mb-4">Total</h2>
-  <div></div>
 </div>
