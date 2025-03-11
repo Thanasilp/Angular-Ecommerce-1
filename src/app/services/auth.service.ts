@@ -12,6 +12,12 @@ export class AuthService {
   private baseUrl = 'http://localhost:4000';
   private token = signal(localStorage.getItem('token') || ''); // เก็บ token
 
+  constructor() {
+    if (this.isTokenExpired()) {
+      this.logout(); // ออกจากระบบถ้า token หมดอายุ
+    }
+  }
+
   //การใช้ !! เป็นการแปลงค่า this.token() ให้เป็น Boolean:
   //ถ้า this.token() มีค่าเป็น undefined, null, หรือค่าอื่นๆ ที่ถือว่า "falsy" (เช่น '', 0, false), !! จะทำให้ค่าเป็น false
   //ถ้า this.token() มีค่าเป็น string ที่ไม่ว่างเปล่า (เช่น JWT token ที่ถูกเก็บใน localStorage), !! จะทำให้ค่าเป็น true
@@ -44,15 +50,41 @@ export class AuthService {
       );
   }
 
+  decodeBase64Unicode(base64: string): string {
+    const binaryString = atob(base64); // Decode Base64 to binary string
+    const bytes = new Uint8Array(binaryString.length);
+
+    for (let i = 0; i < binaryString.length; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+    return new TextDecoder().decode(bytes); // Decode to UTF-8 string
+  }
+
   isTokenExpired(): boolean {
     const token = localStorage.getItem('token');
     if (!token) {
       return true;
     }
 
-    const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT
-    const expiry = payload.exp * 1000; // แปลงเป็น miliseconds
-    return Date.now() > expiry; // ถ้าเวลาปัจจุบันมากกว่า expiry ถือว่าหมดอายุ
+    const parts = token.split('.');
+    if (parts.length !== 3) {
+      // ตรวจสอบว่า token มี 3 ส่วน
+      return true;
+    }
+
+    try {
+      // const payload = JSON.parse(atob(parts[1])); // Decode JWT
+      const payload = JSON.parse(this.decodeBase64Unicode(parts[1]));
+      if (!payload.exp) {
+        // ตรวจสอบว่า exp มีค่าหรือไม่
+        return true;
+      }
+
+      const expiry = payload.exp * 1000; // แปลงเป็น milliseconds
+      return Date.now() > expiry;
+    } catch (error) {
+      return true; // ถ้า decode ไม่ได้ ถือว่าหมดอายุ
+    }
   }
 
   logout() {

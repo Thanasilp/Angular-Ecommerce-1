@@ -20,7 +20,7 @@ import { initFlowbite } from 'flowbite';
 export class NavbarComponent implements OnInit {
   public authService = inject(AuthService);
   private router = inject(Router);
-  private cdr = inject(ChangeDetectorRef);
+  // private cdr = inject(ChangeDetectorRef);
 
   //ก่อนที่ไม่ได้ใช้ตัวนี้ ปัญหาคือ icon user กดไม่ได้
   // บางครั้ง Angular อาจไม่ detect การเปลี่ยนแปลงของ Signal ได้เร็วพอ ดังนั้นเราสามารถใช้ ChangeDetectorRef เพื่อบังคับให้ Component re-render
@@ -31,20 +31,22 @@ export class NavbarComponent implements OnInit {
   //   });
   // }
 
-  constructor() {
-    effect(() => {
-      console.log('Auth changed:', this.isLoggedIn());
-      this.cdr.detectChanges(); // บังคับให้ Angular อัปเดต
-      initFlowbite(); // เรียก Flowbite ใหม่
-    });
-  }
-
-  ngOnInit(): void {
-    console.log('check');
-  }
+  // constructor() {
+  //   initFlowbite;
+  //   console.log(this.isLoggedIn());
+  // }
 
   // ใช้ computed เพื่อให้ฟังก์ชันนี้รีเฟรชตามการเปลี่ยนแปลงของ signal
+
   isLoggedIn = computed(() => this.authService.isAuthenticated());
+  isLoggedIn2 = this.authService.isAuthenticated();
+
+  ngOnInit(): void {
+    console.log(this.isLoggedIn());
+    console.log(this.isLoggedIn2);
+
+    // this.cdr.detectChanges();
+  }
 
   // isLoggedIn() {
   //   return true;

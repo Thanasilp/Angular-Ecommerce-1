@@ -41,7 +41,8 @@ export class LoginComponent {
       next: () => {
         this.toastr.success('Success', 'Login Successful');
         setTimeout(() => {
-          this.router.navigate(['home']);
+          // this.router.navigate(['home']);
+          window.location.href = 'home';
         }, 1000);
       },
       error: () => {

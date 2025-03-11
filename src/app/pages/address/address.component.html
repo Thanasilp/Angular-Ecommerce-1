@@ -1,7 +1,7 @@
 <form
   [formGroup]="deliveryForm"
   (ngSubmit)="onSubmit()"
-  class="mx-auto my-8 px-4 min-h-screen"
+  class="mx-auto my-8 px-4 min-h-screen max-w-6xl mt-20"
 >
   <!-- Delivery Form Section -->
   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -99,7 +99,7 @@
               value="bank"
               class="mr-2"
             />
-            <label for="bank" class="text-lg font-bold text-gray-800"
+            <label for="bank" class="text-lg font-semibold text-gray-800"
               >Bank Transfer</label
             >
           </div>
@@ -109,13 +109,13 @@
         <button
           type="submit"
           [disabled]="!deliveryForm.valid"
-          class="w-full py-3 bg-blue-900 text-white rounded-md hover:bg-blue-700"
+          class="w-full py-3 bg-blue-900 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400"
         >
           Confirm Order
         </button>
         <button
           (click)="back()"
-          type="submit"
+          type="button"
           class="w-full py-3 bg-gray-700 text-white rounded-md mt-4 hover:bg-gray-900"
         >
           Back

@@ -1,10 +1,11 @@
 import { CartService } from './../../services/cart.service';
-import { Component, inject, Input } from '@angular/core';
+import { Component, computed, inject, Input, OnInit } from '@angular/core';
 import { MenuItem } from '../../interfaces/Menu-items';
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { CartItem } from '../../interfaces/Cart-items';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-menu-list',
@@ -23,11 +24,21 @@ import { ToastrService } from 'ngx-toastr';
     ]),
   ],
 })
-export class MenuListComponent {
+export class MenuListComponent implements OnInit {
   private cartService = inject(CartService);
   private toastr = inject(ToastrService);
+  private authService = inject(AuthService);
 
   @Input() menuItems: MenuItem[] = [];
+
+  //Angular ใช้ signal และ computed เป็นตัวจัดการ state แบบ reactive แต่ [disabled] คาดหวังค่า boolean ปกติ ทำให้มันไม่ได้อัปเดตตามที่คาดหวัง
+  // isLoggedIn = computed(() => this.authService.isAuthenticated());
+
+  isLoggedIn = computed(() => this.authService.isAuthenticated());
+
+  ngOnInit() {
+    // console.log('from menu' + this.authService.isAuthenticated());
+  }
 
   addToCart(item: MenuItem) {
     console.log('item added in menu-list');

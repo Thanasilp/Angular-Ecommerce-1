@@ -76,6 +76,10 @@ export class CartComponent implements OnInit {
     this.router.navigate(['address']);
   }
 
+  toMenu() {
+    this.router.navigate(['menu']);
+  }
+
   clearCart() {
     this.cartService.clearCart();
     this.toastr.info('Cart cleared!', 'Info');

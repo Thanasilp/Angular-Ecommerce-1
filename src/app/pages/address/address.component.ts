@@ -47,7 +47,9 @@ export class AddressComponent implements OnInit {
     );
   }
 
-  onSubmit() {}
+  onSubmit() {
+    console.log();
+  }
   back() {
     this.router.navigate(['cart']);
   }
