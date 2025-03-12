@@ -26,8 +26,8 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class LoginComponent {
   login = {
-    email: '',
-    password: '',
+    email: 'test2@test.com',
+    password: 'Test@1234',
   };
 
   private authService = inject(AuthService);

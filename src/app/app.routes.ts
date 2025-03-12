@@ -8,6 +8,7 @@ import { CartComponent } from './pages/cart/cart.component';
 import { authGuard } from './guards/auth.guard';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { AddressComponent } from './pages/address/address.component';
+import { MapComponent } from './components/map/map.component';
 
 export const routes: Routes = [
   {
@@ -34,6 +35,11 @@ export const routes: Routes = [
   {
     path: 'address',
     component: AddressComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'map',
+    component: MapComponent,
     canActivate: [authGuard],
   },
   {

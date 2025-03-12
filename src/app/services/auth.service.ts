@@ -32,6 +32,15 @@ export class AuthService {
     return this.token(); // เพิ่ม getter เพื่อให้สามารถเข้าถึง token ได้
   }
 
+  getUserId(): string | null {
+    const token = this.token();
+    if (token) {
+      const decodedToken = this.decodeToken(token);
+      return decodedToken ? decodedToken.id : null;
+    }
+    return null;
+  }
+
   registerUser(registerData: RegisterData): Observable<any> {
     return this.http.post(`${this.baseUrl}/user/register`, registerData);
   }
@@ -50,7 +59,18 @@ export class AuthService {
       );
   }
 
-  decodeBase64Unicode(base64: string): string {
+  private decodeToken(token: string): any {
+    try {
+      const payload = token.split('.')[1]; // ดึง payload จาก JWT
+      const decoded = this.decodeBase64Unicode(payload);
+      return JSON.parse(decoded);
+    } catch (error) {
+      console.error('Error decoding token', error);
+      return null;
+    }
+  }
+
+  private decodeBase64Unicode(base64: string): string {
     const binaryString = atob(base64); // Decode Base64 to binary string
     const bytes = new Uint8Array(binaryString.length);
 
