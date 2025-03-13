@@ -1,0 +1,7 @@
+1️⃣ ใช้ effect() เพื่อให้ค่าอัปเดตอัตโนมัติ
+    effect() จะถูกเรียกทุกครั้งที่ computed() เปลี่ยนค่า
+เมื่อลูกค้าเลื่อนหมุดใหม่ this.locationService.deliveryAddress() เปลี่ยน → ค่าใน formControl('address') เปลี่ยนตาม
+2️⃣ ใช้ { emitEvent: false } ตอน setValue()
+    ป้องกันไม่ให้เกิด Infinite Loop (เช่น การเปลี่ยนค่าทำให้เกิดการเปลี่ยนค่าซ้ำไปมา)
+3️⃣ this.cdr.detectChanges();
+    บังคับให้ Angular รู้ว่ามีการเปลี่ยนแปลงในฟอร์ม (ป้องกันปัญหา UI ไม่อัปเดต)

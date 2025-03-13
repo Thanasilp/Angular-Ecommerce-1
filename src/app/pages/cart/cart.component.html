@@ -71,7 +71,8 @@
       <button
         type="button"
         (click)="checkout()"
-        class="bg-black hover:bg-gray-900 text-white text-sm py-2 px-4 rounded-lg mt-4 w-full"
+        [disabled]="cartItems().length === 0"
+        class="bg-black hover:bg-gray-900 text-white text-sm py-2 px-4 rounded-lg mt-4 w-full disabled:bg-gray-400"
       >
         Checkout
       </button>

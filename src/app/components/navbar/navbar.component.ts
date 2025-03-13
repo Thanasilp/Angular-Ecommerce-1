@@ -4,12 +4,10 @@ import {
   ChangeDetectorRef,
   Component,
   computed,
-  effect,
   inject,
   OnInit,
 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { initFlowbite } from 'flowbite';
 
 @Component({
   selector: 'app-navbar',

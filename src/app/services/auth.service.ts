@@ -24,6 +24,7 @@ export class AuthService {
 
   isAuthenticated = computed(() => !!this.token()); // คำนวณว่าผู้ใช้ล็อกอินหรือไม่
 
+  address = signal<object | null>(null);
   //ผลลัพธ์ที่ได้จาก !!this.token() คือ:
   //true: ถ้าผู้ใช้ล็อกอินแล้วและมี token ที่ถูกเก็บอยู่ใน signal
   //false: ถ้าผู้ใช้ไม่ได้ล็อกอิน หรือไม่มี token อยู่ใน signal
@@ -57,6 +58,29 @@ export class AuthService {
           this.token.set(response.token); // อัปเดต signal
         })
       );
+  }
+
+  updateUserAddress(name: string, displayedAddress: string) {
+    this.http.put<{ success: boolean; message: string }>(
+      `${this.baseUrl}/user`,
+      {}
+    );
+  }
+
+  getUserAddress() {
+    const token = this.token();
+    if (token) {
+      const decodedToken = this.decodeToken(token); //decodedToken ได้ payload มาแล้ว
+      const userId = decodedToken.id;
+      return this.http.get<{
+        name: string;
+        address: string;
+        lat: number;
+        lng: number;
+        phone: number;
+      }>(`${this.baseUrl}/user/address`, userId);
+    }
+    return null;
   }
 
   private decodeToken(token: string): any {

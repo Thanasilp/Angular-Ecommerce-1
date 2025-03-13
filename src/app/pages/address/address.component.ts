@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   computed,
+  effect,
   inject,
   OnInit,
   signal,
@@ -36,15 +37,18 @@ export class AddressComponent implements OnInit {
 
   cartItems = this.cartService.cartItems;
 
-  address = computed(() => this.locationService.deliveryAddress());
+  address = computed(() => this.locationService.deliveryAddress()); // เก็บค่า address ที่แปลงจาก lat/lng จาก map component อีกที
+  location = computed(() => this.locationService.deliveryLocation()); // เก็บค่า lat/lng
 
-  deliveryForm!: FormGroup;
+  deliveryForm!: FormGroup; //deliveryForm! บอกว่า deliveryForm จะมีค่าแน่นอน
 
   constructor() {
     this.cartService.fetchCartItems(); // โหลดข้อมูลตะกร้าเมื่อ component ถูกสร้าง
   }
 
   ngOnInit(): void {
+    // โหลดข้อมูลที่อยู่ของผู้ใช้จาก backend
+
     //สร้างฟอร์มด้วย FormGroup
     this.deliveryForm = this.fb.group({
       name: ['', Validators.required],
@@ -52,15 +56,15 @@ export class AddressComponent implements OnInit {
       phone: ['', [Validators.required, Validators.pattern('[0-9]{10}')]],
       details: ['', Validators.required],
     });
-
-    // ตั้งค่า address จาก computed ให้กับ form control 'address'
-    this.deliveryForm.get('address')?.setValue(this.address());
-
-    // ตรวจสอบการเปลี่ยนแปลงของ signal address
-    this.cdr.detectChanges();
-
-    console.log('This.address', this.address);
   }
+
+  // effect() จะทำงานทันทีที่ Component ถูกโหลด
+  updateEffect = effect(() => {
+    const newAddress = this.address();
+    this.deliveryForm
+      .get('address')
+      ?.setValue(newAddress, { emitEvent: false });
+  });
 
   // คำนวณราคาสินค้ารวม
   calculateTotal(): number {
@@ -81,9 +85,5 @@ export class AddressComponent implements OnInit {
   }
   back() {
     this.router.navigate(['cart']);
-  }
-
-  updateAddress() {
-    return this.deliveryForm.get('address')?.setValue('this.address()');
   }
 }

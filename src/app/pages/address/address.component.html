@@ -5,9 +5,14 @@
 >
   <!-- Delivery Form Section -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-    <div class="w-full mx-auto"><app-map></app-map></div>
+    <div class="w-full mx-auto">
+      <app-map></app-map>
+      <p class="text-sm text-gray-500 p-1 text-center">
+        *เลื่อนตำแหน่งหมุดเพื่อระบุที่อยู่
+      </p>
+    </div>
     <!-- Address Form -->
-    <div class="bg-white p-6 rounded-lg shadow-md max-w-2xl w-full mx-auto">
+    <div class="bg-white p-6 rounded-lg shadow-md max-w w-full mx-auto">
       <div class="flex gap-2">
         <i class="fa-solid fa-location-dot text-2xl text-gray-600 mt-0.5"></i>
         <h2 class="text-2xl font-semibold text-gray-700 mb-4">
@@ -17,7 +22,7 @@
 
       <div>
         <div class="mb-4">
-          <label for="name" class="block text-sm font-medium text-gray-600"
+          <label for="name" class="block text-sm font-medium text-gray-600 mb-1"
             >Full Name</label
           >
 
@@ -31,7 +36,9 @@
           />
         </div>
         <div class="mb-4">
-          <label for="address" class="block text-sm font-medium text-gray-600"
+          <label
+            for="address"
+            class="block text-sm font-medium text-gray-600 mb-1"
             >Address</label
           >
           <textarea
@@ -44,7 +51,9 @@
           ></textarea>
         </div>
         <div class="mb-4">
-          <label for="phone" class="block text-sm font-medium text-gray-600"
+          <label
+            for="phone"
+            class="block text-sm font-medium text-gray-600 mb-1"
             >Phone Number</label
           >
           <input
@@ -57,7 +66,9 @@
           />
         </div>
         <div class="mb-4">
-          <label for="details" class="block text-sm font-medium text-gray-600"
+          <label
+            for="details"
+            class="block text-sm font-medium text-gray-600 mb-1"
             >Delivery Details</label
           >
           <textarea
@@ -69,14 +80,16 @@
           ></textarea>
         </div>
       </div>
-      <div class="flex gap-2 justify-center">
+      <!-- <div class="flex gap-2 justify-center">
         <i class="fa-solid fa-location-dot text-2xl text-gray-600"></i>
         <p>{{ address() }}</p>
-      </div>
+      </div> -->
     </div>
 
     <!-- Payment and Price Card Section -->
-    <div class="bg-white p-6 rounded-lg shadow-md w-full max-w-md mx-auto">
+    <div
+      class="bg-white p-6 rounded-lg shadow-md w-full max-w mx-auto sm: w-2xl"
+    >
       <h2 class="text-2xl font-semibold text-gray-700 mb-4">Payment & Price</h2>
       <div class="mb-4">
         <p class="text-lg font-semibold text-gray-700">
