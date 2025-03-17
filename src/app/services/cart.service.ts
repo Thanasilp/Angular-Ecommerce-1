@@ -14,6 +14,7 @@ export class CartService {
   constructor(private http: HttpClient) {}
 
   // โหลดตะกร้าและอัปเดต signal
+  // subscribe คือการรับข้อมูลจากตัวด้านหน้าเพื่อไปทำอย่างอื่นต่อ เหมือน then (ประมาณว่าต้องสำเร็จเงื่อนไขก่อน )
   fetchCartItems() {
     this.http
       .get<{ success: boolean; message: string; cart: any }>(this.apiUrl)

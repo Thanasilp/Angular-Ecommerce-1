@@ -1,13 +1,4 @@
-import { AuthService } from './../../services/auth.service';
-import {
-  ChangeDetectorRef,
-  Component,
-  computed,
-  effect,
-  inject,
-  OnInit,
-  signal,
-} from '@angular/core';
+import { Component, computed, effect, inject, OnInit } from '@angular/core';
 import { CartService } from '../../services/cart.service';
 import { CommonModule } from '@angular/common';
 import {
@@ -20,6 +11,7 @@ import {
 import { Router } from '@angular/router';
 import { MapComponent } from '../../components/map/map.component';
 import { LocationService } from '../../services/location.service';
+import { AddressService } from '../../services/address.service';
 
 @Component({
   selector: 'app-address',
@@ -29,11 +21,10 @@ import { LocationService } from '../../services/location.service';
 })
 export class AddressComponent implements OnInit {
   private cartService = inject(CartService);
-  private authService = inject(AuthService);
+  private addressService = inject(AddressService);
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private locationService = inject(LocationService);
-  private cdr = inject(ChangeDetectorRef);
 
   cartItems = this.cartService.cartItems;
 
@@ -56,6 +47,28 @@ export class AddressComponent implements OnInit {
       phone: ['', [Validators.required, Validators.pattern('[0-9]{10}')]],
       details: ['', Validators.required],
     });
+
+    this.addressService.getUserAddress().subscribe({
+      next: (res) => {
+        if (res.success && res.address) {
+          console.log('this is res.address', res.address);
+
+          this.deliveryForm.patchValue(res.address);
+        }
+      },
+      error: (error) => console.error('Error fetching address', error),
+      complete: () => console.log('Fetch address completed.'),
+    });
+
+    // version นี้ depricate ไปแล้ว ต้องใช้แบบ object แทน
+    // this.addressService.getUserAddress().subscribe(
+    //   (res) => {
+    //     if (res.success && res.address) {
+    //       this.deliveryForm.patchValue(res.address);
+    //     }
+    //   },
+    //   (error) => console.error('Error fetching address', error)
+    // );
   }
 
   // effect() จะทำงานทันทีที่ Component ถูกโหลด
@@ -64,6 +77,9 @@ export class AddressComponent implements OnInit {
     this.deliveryForm
       .get('address')
       ?.setValue(newAddress, { emitEvent: false });
+    //เอาสองตัวนี้อัปเดตตามฟอร์ม
+    console.log(this.address());
+    console.log(this.location());
   });
 
   // คำนวณราคาสินค้ารวม
@@ -74,15 +90,54 @@ export class AddressComponent implements OnInit {
     );
   }
 
+  // โหลดที่อยู่ของ user ผ่าน AddressService
+
   onSubmit() {
     if (this.deliveryForm.invalid) {
       return;
     }
 
-    const userId = this.authService.getUserId();
+    // ใช้ Type Assertion แปลง object ให้เป็นประเภทที่มี lat และ lng
+    const location = this.location() as { lat: number; lng: number }; // Type Assertion
+    if (location && location.lat && location.lng) {
+      const addressData = {
+        ...this.deliveryForm.value,
+        lat: location.lat,
+        lng: location.lng,
+      };
 
-    const orderData = {};
+      this.addressService.updateUserAddress(addressData).subscribe({
+        next: (res) => {
+          if (res.success) {
+            console.log('Address updated successfully!');
+          }
+        },
+        error: (error) => console.error('Error updating address:', error),
+      });
+    } else {
+      console.error('Location is invalid or missing lat/lng');
+    }
   }
+
+  // (res) => {
+  //   if (res.success) {
+  //     console.log('Address updated successfully!');
+  //   }
+  // },
+  // (err) => console.error('Error updating address:', err)
+
+  // this.addressService.getUserAddress().subscribe({
+  //   next: (res) => {
+  //     if (res.success && res.address) {
+  //       console.log('this is res.address', res.address);
+
+  //       this.deliveryForm.patchValue(res.address);
+  //     }
+  //   },
+  //   error: (error) => console.error('Error fetching address', error),
+  //   complete: () => console.log('Fetch address completed.'),
+  // });
+
   back() {
     this.router.navigate(['cart']);
   }

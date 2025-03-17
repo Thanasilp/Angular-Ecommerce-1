@@ -60,28 +60,31 @@ export class AuthService {
       );
   }
 
-  updateUserAddress(name: string, displayedAddress: string) {
-    this.http.put<{ success: boolean; message: string }>(
-      `${this.baseUrl}/user`,
-      {}
+  updateUserAddress(addressData: {
+    name: string;
+    displayedAddress: string;
+    lat: number;
+    lng: number;
+    phone: string;
+    details: string;
+  }): Observable<{ success: boolean; message: string }> {
+    return this.http.put<{ success: boolean; message: string }>(
+      `${this.baseUrl}/user/address`,
+      addressData
     );
   }
 
-  getUserAddress() {
-    const token = this.token();
-    if (token) {
-      const decodedToken = this.decodeToken(token); //decodedToken ได้ payload มาแล้ว
-      const userId = decodedToken.id;
-      return this.http.get<{
-        name: string;
-        address: string;
-        lat: number;
-        lng: number;
-        phone: number;
-      }>(`${this.baseUrl}/user/address`, userId);
-    }
-    return null;
-  }
+  // getUserAddress(): Observable<any> {
+  //   const token = this.token();
+  //   if (token) {
+  //     const decodedToken = this.decodeToken(token);
+  //     const userId = decodedToken?.id;
+  //     if (userId) {
+  //       return this.http.get(`${this.baseUrl}/user/${userId}/address`);
+  //     }
+  //   }
+  //   return null;
+  // }
 
   private decodeToken(token: string): any {
     try {
