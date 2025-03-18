@@ -105,6 +105,7 @@ export class AddressComponent implements OnInit {
         lat: location.lat,
         lng: location.lng,
       };
+      // console.log('This is address data', addressData);
 
       this.addressService.updateUserAddress(addressData).subscribe({
         next: (res) => {

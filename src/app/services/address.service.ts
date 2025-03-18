@@ -20,6 +20,7 @@ export class AddressService {
   updateUserAddress(
     addressData: any
   ): Observable<{ success: boolean; message: string }> {
+    // console.log('This is address data from address service', addressData);
     return this.http.put<{ success: boolean; message: string }>(
       `${this.baseUrl}/user/address`,
       addressData
