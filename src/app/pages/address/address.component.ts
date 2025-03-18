@@ -28,8 +28,17 @@ export class AddressComponent implements OnInit {
 
   cartItems = this.cartService.cartItems;
 
+  // computed() ถูกใช้เพื่อดึงค่าจาก Signal (deliveryLocation) แต่ในกรณีของ LocationService ค่าอาจถูกเปลี่ยนแปลงจากหลายที่ ทำให้ computed() อาจไม่จำเป็น
   address = computed(() => this.locationService.deliveryAddress()); // เก็บค่า address ที่แปลงจาก lat/lng จาก map component อีกที
   location = computed(() => this.locationService.deliveryLocation()); // เก็บค่า lat/lng
+
+  // get address() {
+  //   return this.locationService.deliveryAddress();
+  // }
+
+  // get location() {
+  //   return this.locationService.deliveryLocation();
+  // }
 
   deliveryForm!: FormGroup; //deliveryForm! บอกว่า deliveryForm จะมีค่าแน่นอน
 
@@ -51,9 +60,19 @@ export class AddressComponent implements OnInit {
     this.addressService.getUserAddress().subscribe({
       next: (res) => {
         if (res.success && res.address) {
-          console.log('this is res.address', res.address);
+          // console.log('this is res.address', res.address);
 
           this.deliveryForm.patchValue(res.address);
+
+          // ดึงข้อมูลมาแล้ว เราต้องอัปเดตข้อมูล lat/lng กลับไปให้ service ไปอัปเดตตำแหน่งหมุดใน component map ด้วย
+          if (res.address.lat && res.address.lng) {
+            const newLocation = { lat: res.address.lat, lng: res.address.lng };
+            this.locationService.deliveryLocation.set(newLocation);
+            // localStorage.setItem(
+            //   'deliveryLocation',
+            //   JSON.stringify(newLocation)
+            // );
+          }
         }
       },
       error: (error) => console.error('Error fetching address', error),
@@ -73,7 +92,7 @@ export class AddressComponent implements OnInit {
 
   // effect() จะทำงานทันทีที่ Component ถูกโหลด
   updateEffect = effect(() => {
-    const newAddress = this.address();
+    const newAddress = this.address;
     this.deliveryForm
       .get('address')
       ?.setValue(newAddress, { emitEvent: false });
@@ -111,6 +130,8 @@ export class AddressComponent implements OnInit {
         next: (res) => {
           if (res.success) {
             console.log('Address updated successfully!');
+            // localStorage.removeItem('deliveryLocation');
+            // this.locationService.clearSavedLocation();
           }
         },
         error: (error) => console.error('Error updating address:', error),

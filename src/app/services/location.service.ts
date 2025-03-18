@@ -6,7 +6,7 @@ import { Injectable, signal } from '@angular/core';
 export class LocationService {
   // สร้าง signal สำหรับเก็บ address
   deliveryAddress = signal<string | null>(null);
-  deliveryLocation = signal<object | null>(null);
+  deliveryLocation = signal<{ lat: number; lng: number } | null>(null);
 
   constructor() {}
 
@@ -21,7 +21,11 @@ export class LocationService {
       if (data && data.display_name) {
         // อัปเดตค่าที่อยู่ใน signal โดยหลังจากนี้ deliveryAddress จะมีค่าเป็น data.display_name เพราะถูกเซ็ตค่าไปแล้ว
         this.deliveryAddress.set(data.display_name);
-        this.deliveryLocation.set({ lat: data.lat, lng: data.lon });
+        //parseFloat เพื่อให้แน่ใจว่าค่าที่เข้ามาเป็นทศนิยม
+        this.deliveryLocation.set({
+          lat: parseFloat(data.lat),
+          lng: parseFloat(data.lon),
+        });
         // console.log(this.deliveryLocation());
       } else {
         this.deliveryAddress.set('ไม่พบที่อยู่');
@@ -30,5 +34,37 @@ export class LocationService {
       console.error('Error fetching address:', error);
       this.deliveryAddress.set('เกิดข้อผิดพลาดในการดึงที่อยู่');
     }
+  }
+
+  // setLocation(lat: number, lng: number) {
+  //   const newLocation = { lat, lng };
+  //   this.deliveryLocation.set(newLocation);
+  //   localStorage.setItem('deliveryLocation', JSON.stringify(newLocation));
+  // }
+
+  // private getSavedLocation(): { lat: number; lng: number } | null {
+  //   const saved = localStorage.getItem('deliveryLocation');
+  //   if (!saved) {
+  //     return null;
+  //   }
+
+  //   try {
+  //     const parsed = JSON.parse(saved);
+  //     if (
+  //       parsed &&
+  //       typeof parsed.lat === 'number' &&
+  //       typeof parsed.lng === 'number'
+  //     ) {
+  //       return parsed;
+  //     }
+  //   } catch (error) {
+  //     console.warn('Invalid location data in localStorage');
+  //   }
+  //   return null;
+  // }
+
+  clearSavedLocation() {
+    localStorage.removeItem('deliveryLocation');
+    this.deliveryLocation.set(null);
   }
 }
