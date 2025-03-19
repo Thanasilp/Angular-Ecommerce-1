@@ -15,12 +15,6 @@ import * as L from 'leaflet';
   styleUrls: ['./map.component.scss'],
 })
 export class MapComponent implements AfterViewInit {
-  // @Output() locationSelected = new EventEmitter<{
-  //   lat: number;
-  //   lng: number;
-  //   address: string;
-  // }>();
-
   private map!: L.Map;
   private marker!: L.Marker;
   private locationService = inject(LocationService);
@@ -41,6 +35,7 @@ export class MapComponent implements AfterViewInit {
       if (location && this.map && this.marker) {
         console.log('Updating marker position to:', location);
         this.updateMarkerPosition(location);
+        console.log('loop');
       }
     });
   }
@@ -59,17 +54,17 @@ export class MapComponent implements AfterViewInit {
     this.setupMap();
 
     if (navigator.geolocation) {
-      navigator.geolocation.watchPosition(
+      navigator.geolocation.getCurrentPosition(
         (position) => {
           // lat-lng SET 3
           this.lat = position.coords.latitude;
           this.lng = position.coords.longitude;
 
           // อัปเดตค่าลง LocationService
-          // this.locationService.setLocation(this.lat, this.lng);
 
           // อัปเดตหมุด แทนที่จะโหลดแผนที่ใหม่
           this.updateMarkerPosition({ lat: this.lat, lng: this.lng });
+          this.locationService.setLocation(this.lat, this.lng);
         },
         () => {
           console.warn('Geolocation failed, using default location.');

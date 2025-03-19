@@ -4,14 +4,26 @@
   class="mx-auto my-8 px-4 min-h-screen max-w-7xl mt-20"
 >
   <!-- Delivery Form Section -->
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    @if (addressSaved) {
+    <div>
+      <img
+        class="rounded-lg"
+        src="https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        alt=""
+      />
+    </div>
+    } @if (!addressSaved) {
     <div class="w-full mx-auto">
       <app-map></app-map>
       <p class="text-sm text-gray-500 p-1 text-center">
         *เลื่อนตำแหน่งหมุดเพื่อระบุที่อยู่
       </p>
     </div>
+    }
+
     <!-- Address Form -->
+    @if (!addressSaved) {
     <div class="bg-white p-6 rounded-lg shadow-md max-w w-full mx-auto">
       <div class="flex gap-2">
         <i class="fa-solid fa-location-dot text-2xl text-gray-600 mt-0.5"></i>
@@ -80,13 +92,30 @@
           ></textarea>
         </div>
       </div>
+      <button
+        type="button"
+        [disabled]="!deliveryForm.valid || addressSaved"
+        (click)="onSaveAddress()"
+        class="w-full py-3 bg-blue-900 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400"
+      >
+        Confirm Address
+      </button>
+      <button
+        (click)="back()"
+        type="button"
+        class="w-full py-3 bg-gray-700 text-white rounded-md mt-4 hover:bg-gray-900"
+      >
+        Back
+      </button>
       <!-- <div class="flex gap-2 justify-center">
-        <i class="fa-solid fa-location-dot text-2xl text-gray-600"></i>
-        <p>{{ address() }}</p>
-      </div> -->
+          <i class="fa-solid fa-location-dot text-2xl text-gray-600"></i>
+          <p>{{ address() }}</p>
+        </div> -->
     </div>
+    }
 
     <!-- Payment and Price Card Section -->
+    @if (addressSaved) {
     <div
       class="bg-white p-6 rounded-lg shadow-md w-full max-w mx-auto sm: w-2xl"
     >
@@ -131,7 +160,7 @@
       <div>
         <button
           type="submit"
-          [disabled]="!deliveryForm.valid"
+          [disabled]="!addressSaved"
           class="w-full py-3 bg-blue-900 text-white rounded-md hover:bg-blue-700 disabled:bg-gray-400"
         >
           Confirm Order
@@ -145,5 +174,6 @@
         </button>
       </div>
     </div>
+    }
   </div>
 </form>

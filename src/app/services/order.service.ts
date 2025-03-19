@@ -9,7 +9,12 @@ export class OrderService {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:4000/orders';
 
-  createOrder(orderData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}`, orderData);
+  createOrder(
+    orderData: any
+  ): Observable<{ success: boolean; message: string }> {
+    return this.http.post<{ success: boolean; message: string }>(
+      `${this.apiUrl}`,
+      orderData
+    );
   }
 }

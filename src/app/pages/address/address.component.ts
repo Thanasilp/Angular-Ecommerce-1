@@ -1,3 +1,4 @@
+import { OrderService } from './../../services/order.service';
 import { Component, computed, effect, inject, OnInit } from '@angular/core';
 import { CartService } from '../../services/cart.service';
 import { CommonModule } from '@angular/common';
@@ -12,6 +13,7 @@ import { Router } from '@angular/router';
 import { MapComponent } from '../../components/map/map.component';
 import { LocationService } from '../../services/location.service';
 import { AddressService } from '../../services/address.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-address',
@@ -25,6 +27,8 @@ export class AddressComponent implements OnInit {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private locationService = inject(LocationService);
+  private orderService = inject(OrderService);
+  private toastr = inject(ToastrService);
 
   cartItems = this.cartService.cartItems;
 
@@ -103,42 +107,62 @@ export class AddressComponent implements OnInit {
 
   // คำนวณราคาสินค้ารวม
   calculateTotal(): number {
-    return this.cartItems().reduce(
+    const totalAmount = this.cartItems().reduce(
       (total, item) => total + item.price * item.quantity,
       0
     );
+    return totalAmount;
   }
 
   // โหลดที่อยู่ของ user ผ่าน AddressService
 
-  onSubmit() {
+  addressSaved = false;
+
+  onSaveAddress() {
     if (this.deliveryForm.invalid) {
       return;
     }
 
-    // ใช้ Type Assertion แปลง object ให้เป็นประเภทที่มี lat และ lng
-    const location = this.location() as { lat: number; lng: number }; // Type Assertion
-    if (location && location.lat && location.lng) {
-      const addressData = {
-        ...this.deliveryForm.value,
-        lat: location.lat,
-        lng: location.lng,
-      };
-      // console.log('This is address data', addressData);
+    const location = this.location() as { lat: number; lng: number };
+    if (location?.lat && location?.lng) {
+      const addressData = { ...this.deliveryForm.value, ...location };
 
       this.addressService.updateUserAddress(addressData).subscribe({
         next: (res) => {
           if (res.success) {
+            this.toastr.success('Address confirm!');
             console.log('Address updated successfully!');
-            // localStorage.removeItem('deliveryLocation');
-            // this.locationService.clearSavedLocation();
+            this.addressSaved = true;
           }
         },
         error: (error) => console.error('Error updating address:', error),
       });
-    } else {
-      console.error('Location is invalid or missing lat/lng');
     }
+
+    console.error('Invalid location data');
+  }
+
+  onSubmit() {
+    if (this.cartItems().length === 0) {
+      console.error('Cart is empty');
+      return;
+    }
+
+    const orderData = {
+      items: this.cartItems(),
+      totalAmount: this.calculateTotal(),
+      deliveryAddress: this.deliveryForm.value,
+    };
+
+    this.orderService.createOrder(orderData).subscribe({
+      next: (res) => {
+        console.log('Order placed successfully', res);
+        this.cartService.clearCart();
+        this.locationService.clearSavedLocation();
+        this.router.navigate(['home']);
+      },
+      error: (err) => console.error('Order creation failed:', err),
+    });
   }
 
   // (res) => {

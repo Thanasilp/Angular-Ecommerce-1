@@ -22,10 +22,10 @@ export class LocationService {
         // อัปเดตค่าที่อยู่ใน signal โดยหลังจากนี้ deliveryAddress จะมีค่าเป็น data.display_name เพราะถูกเซ็ตค่าไปแล้ว
         this.deliveryAddress.set(data.display_name);
         //parseFloat เพื่อให้แน่ใจว่าค่าที่เข้ามาเป็นทศนิยม
-        this.deliveryLocation.set({
-          lat: parseFloat(data.lat),
-          lng: parseFloat(data.lon),
-        });
+        // this.deliveryLocation.set({
+        //   lat: parseFloat(data.lat),
+        //   lng: parseFloat(data.lon),
+        // });
         // console.log(this.deliveryLocation());
       } else {
         this.deliveryAddress.set('ไม่พบที่อยู่');
