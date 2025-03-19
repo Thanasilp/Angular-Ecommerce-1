@@ -36,32 +36,32 @@ export class LocationService {
     }
   }
 
-  // setLocation(lat: number, lng: number) {
-  //   const newLocation = { lat, lng };
-  //   this.deliveryLocation.set(newLocation);
-  //   localStorage.setItem('deliveryLocation', JSON.stringify(newLocation));
-  // }
+  setLocation(lat: number, lng: number) {
+    const newLocation = { lat, lng };
+    this.deliveryLocation.set(newLocation);
+    localStorage.setItem('deliveryLocation', JSON.stringify(newLocation));
+  }
 
-  // private getSavedLocation(): { lat: number; lng: number } | null {
-  //   const saved = localStorage.getItem('deliveryLocation');
-  //   if (!saved) {
-  //     return null;
-  //   }
+  private getSavedLocation(): { lat: number; lng: number } | null {
+    const saved = localStorage.getItem('deliveryLocation');
+    if (!saved) {
+      return null;
+    }
 
-  //   try {
-  //     const parsed = JSON.parse(saved);
-  //     if (
-  //       parsed &&
-  //       typeof parsed.lat === 'number' &&
-  //       typeof parsed.lng === 'number'
-  //     ) {
-  //       return parsed;
-  //     }
-  //   } catch (error) {
-  //     console.warn('Invalid location data in localStorage');
-  //   }
-  //   return null;
-  // }
+    try {
+      const parsed = JSON.parse(saved);
+      if (
+        parsed &&
+        typeof parsed.lat === 'number' &&
+        typeof parsed.lng === 'number'
+      ) {
+        return parsed;
+      }
+    } catch (error) {
+      console.warn('Invalid location data in localStorage');
+    }
+    return null;
+  }
 
   clearSavedLocation() {
     localStorage.removeItem('deliveryLocation');

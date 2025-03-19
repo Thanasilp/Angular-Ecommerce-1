@@ -92,7 +92,7 @@ export class AddressComponent implements OnInit {
 
   // effect() จะทำงานทันทีที่ Component ถูกโหลด
   updateEffect = effect(() => {
-    const newAddress = this.address;
+    const newAddress = this.address();
     this.deliveryForm
       .get('address')
       ?.setValue(newAddress, { emitEvent: false });

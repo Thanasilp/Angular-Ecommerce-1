@@ -25,6 +25,7 @@ export class MapComponent implements AfterViewInit {
   private marker!: L.Marker;
   private locationService = inject(LocationService);
 
+  // lat-lng SET 1
   lat = 19.918;
   lng = 99.826;
 
@@ -49,6 +50,7 @@ export class MapComponent implements AfterViewInit {
     const savedLocation = this.locationService.deliveryLocation();
 
     if (savedLocation) {
+      // lat-lng SET 2
       this.lat = savedLocation.lat;
       this.lng = savedLocation.lng;
     }
@@ -59,6 +61,7 @@ export class MapComponent implements AfterViewInit {
     if (navigator.geolocation) {
       navigator.geolocation.watchPosition(
         (position) => {
+          // lat-lng SET 3
           this.lat = position.coords.latitude;
           this.lng = position.coords.longitude;
 
@@ -85,12 +88,13 @@ export class MapComponent implements AfterViewInit {
       return;
     }
 
-    this.map = L.map('map').setView([this.lat, this.lng], 13);
+    this.map = L.map('map').setView([this.lat, this.lng], 13); // set ตรงกลาง map
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors',
     }).addTo(this.map);
 
+    // set marker
     this.marker = L.marker([this.lat, this.lng], { draggable: true }).addTo(
       this.map
     );
@@ -99,6 +103,7 @@ export class MapComponent implements AfterViewInit {
 
     this.marker.on('dragend', () => {
       const position = this.marker.getLatLng();
+      // lat-lng SET 4
       this.lat = position.lat;
       this.lng = position.lng;
       // this.locationService.setLocation(this.lat, this.lng);
@@ -108,6 +113,7 @@ export class MapComponent implements AfterViewInit {
 
   private updateMarkerPosition(location: { lat: number; lng: number }): void {
     if (this.marker && this.map) {
+      // lat-lng SET 5
       this.marker.setLatLng([location.lat, location.lng]);
       this.map.setView([location.lat, location.lng], this.map.getZoom(), {
         animate: true,
