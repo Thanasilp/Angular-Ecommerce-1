@@ -14,6 +14,7 @@ import { MapComponent } from '../../components/map/map.component';
 import { LocationService } from '../../services/location.service';
 import { AddressService } from '../../services/address.service';
 import { ToastrService } from 'ngx-toastr';
+import { StripeService } from '../../services/stripe.service';
 
 @Component({
   selector: 'app-address',
@@ -29,6 +30,7 @@ export class AddressComponent implements OnInit {
   private locationService = inject(LocationService);
   private orderService = inject(OrderService);
   private toastr = inject(ToastrService);
+  private stripeService = inject(StripeService);
 
   cartItems = this.cartService.cartItems;
 
@@ -159,7 +161,16 @@ export class AddressComponent implements OnInit {
         console.log('Order placed successfully', res);
         this.cartService.clearCart();
         this.locationService.clearSavedLocation();
-        this.router.navigate(['home']);
+
+        // หลังจากบันทึกหน้า order แล้วให้สร้าง checkout Session
+        this.stripeService.createCheckoutSeesion(orderData).subscribe({
+          next: (response) => {
+            // Redirect ไปที่ Stripe Checkout
+            window.location.href = response.sessionUrl;
+          },
+          error: (err) => console.error('Stipe checkout failed', err),
+        });
+        // this.router.navigate(['home']);
       },
       error: (err) => console.error('Order creation failed:', err),
     });
