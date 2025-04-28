@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class OrderService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:4000/orders';
+  private apiUrl = 'https://angular-ecommerce-1-backend.vercel.app//orders';
 
   createOrder(
     orderData: any

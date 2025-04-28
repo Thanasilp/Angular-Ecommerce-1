@@ -6,7 +6,7 @@ import { inject, Injectable } from '@angular/core';
 })
 export class StripeService {
   private http = inject(HttpClient);
-  private baseUrl = 'http://localhost:4000';
+  private baseUrl = 'https://angular-ecommerce-1-backend.vercel.app/';
 
   createCheckoutSeesion(orderData: any) {
     return this.http.post<{ sessionId: string; sessionUrl: string }>(

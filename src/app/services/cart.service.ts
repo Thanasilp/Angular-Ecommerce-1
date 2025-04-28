@@ -6,7 +6,7 @@ import { CartItem } from './../interfaces/Cart-items';
   providedIn: 'root',
 })
 export class CartService {
-  private apiUrl = 'http://localhost:4000/cart'; // URL ของ API Backend
+  private apiUrl = 'https://angular-ecommerce-1-backend.vercel.app//cart'; // URL ของ API Backend
 
   // ใช้ signal แทน Observable
   cartItems = signal<CartItem[]>([]);
