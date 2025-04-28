@@ -9,7 +9,7 @@ import { Observable, tap } from 'rxjs';
 export class AuthService {
   // api part
   private http = inject(HttpClient);
-  private baseUrl = 'https://angular-ecommerce-1-backend.vercel.app/';
+  private baseUrl = 'https://angular-ecommerce-1-backend.vercel.app';
   private token = signal(localStorage.getItem('token') || ''); // เก็บ token
 
   constructor() {

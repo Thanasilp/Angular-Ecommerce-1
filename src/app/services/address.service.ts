@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class AddressService {
   private http = inject(HttpClient);
-  private baseUrl = 'https://angular-ecommerce-1-backend.vercel.app/';
+  private baseUrl = 'https://angular-ecommerce-1-backend.vercel.app';
 
   // ดึงข้อมูลที่อยู่ของผู้ใช้
   getUserAddress(): Observable<{ success: boolean; address: any }> {

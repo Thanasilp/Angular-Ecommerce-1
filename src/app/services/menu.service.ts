@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class MenuService {
   private http = inject(HttpClient);
-  private baseUrl = 'https://angular-ecommerce-1-backend.vercel.app/';
+  private baseUrl = 'https://angular-ecommerce-1-backend.vercel.app';
 
   products = signal<MenuItem[]>([]);
 
